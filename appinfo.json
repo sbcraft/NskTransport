@@ -1,0 +1,19 @@
+{
+  "uuid": "33797458-1691-439f-b42d-a85c46abbed5",
+  "shortName": "NskTransport",
+  "longName": "NskTransport",
+  "companyName": "MakeAwesomeHappen",
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite", "basalt", "chalk"],
+  "enableMultiJS": true,
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
