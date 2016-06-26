@@ -1,60 +1,44 @@
 #include <pebble.h>
 
-static Window *window;
-static TextLayer *text_layer;
+Window *rootWindow;
+TextLayer *textLayer1;
 
-static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  text_layer_set_text(text_layer, "Select");
+#define INFO_KEY = "InfoKey"
+
+void inbox_received(DictionaryIterator *iterator, void *context) {
+    APP_LOG(APP_LOG_LEVEL_INFO, "something received");
+    Tuple *longitude = dict_find(iterator, MESSAGE_KEY_long);
+    if (longitude) {
+        printf("%n", longitude->value->data[0]);
+    }
+    //app_message_open();
+    APP_LOG(APP_LOG_LEVEL_INFO, MESSAGE_KEY_long);
+    //APP_LOG(APP_LOG_LEVEL_INFO, "long: %u", longitude->value->data);
 }
 
-static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  text_layer_set_text(text_layer, "Up");
+void init() {
+    rootWindow = window_create();
+
+    textLayer1 = text_layer_create(GRect(0, 0, 140, 40));
+    text_layer_set_text(textLayer1, "Hello! (Привет!)");
+    layer_add_child(window_get_root_layer(rootWindow), text_layer_get_layer(textLayer1));
+    
+    window_stack_push(rootWindow, true);
+
+    app_message_register_inbox_received(inbox_received);
+    app_message_open(128, 128);
 }
 
-static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  text_layer_set_text(text_layer, "Down");
-}
-
-static void click_config_provider(void *context) {
-  window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
-  window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
-  window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
-}
-
-static void window_load(Window *window) {
-  Layer *window_layer = window_get_root_layer(window);
-  GRect bounds = layer_get_bounds(window_layer);
-
-  text_layer = text_layer_create(GRect(0, 72, bounds.size.w, 20));
-  text_layer_set_text(text_layer, "Press a button");
-  text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(text_layer));
-}
-
-static void window_unload(Window *window) {
-  text_layer_destroy(text_layer);
-}
-
-static void init(void) {
-  window = window_create();
-  window_set_click_config_provider(window, click_config_provider);
-  window_set_window_handlers(window, (WindowHandlers) {
-    .load = window_load,
-    .unload = window_unload,
-  });
-  const bool animated = true;
-  window_stack_push(window, animated);
-}
-
-static void deinit(void) {
-  window_destroy(window);
+void deinit() {
+    text_layer_destroy(textLayer1);
+    window_destroy(rootWindow);
 }
 
 int main(void) {
-  init();
-
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Done initializing, pushed window: %p", window);
-
-  app_event_loop();
-  deinit();
+    APP_LOG(APP_LOG_LEVEL_INFO, "App started");
+    init();
+    app_event_loop();
+    deinit();
+    APP_LOG(APP_LOG_LEVEL_INFO, "App finished");
+    return 0;
 }

@@ -1,0 +1,30 @@
+{
+    "author": "SBCraft",
+    "dependencies": {},
+    "keywords": [],
+    "name": "nsktransport",
+    "pebble": {
+        "capabilities": [
+            "location"
+        ],
+        "displayName": "NskTransport",
+        "enableMultiJS": true,
+        "messageKeys": {
+            "lat": 2,
+            "long": 1
+        },
+        "projectType": "native",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "basalt"
+        ],
+        "uuid": "33797458-1691-439f-b42d-a85c46abbed5",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "0.1.0"
+}
