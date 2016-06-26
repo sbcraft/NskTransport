@@ -9,10 +9,11 @@ void inbox_received(DictionaryIterator *iterator, void *context) {
     APP_LOG(APP_LOG_LEVEL_INFO, "something received");
     Tuple *longitude = dict_find(iterator, MESSAGE_KEY_long);
     if (longitude) {
-        printf("%n", longitude->value->data[0]);
+        APP_LOG(APP_LOG_LEVEL_INFO, "length: %d", longitude->length);
+        APP_LOG(APP_LOG_LEVEL_INFO, "%d", longitude->value->data[0]);
     }
     //app_message_open();
-    APP_LOG(APP_LOG_LEVEL_INFO, MESSAGE_KEY_long);
+    APP_LOG(APP_LOG_LEVEL_INFO, "%d", (int) MESSAGE_KEY_long);
     //APP_LOG(APP_LOG_LEVEL_INFO, "long: %u", longitude->value->data);
 }
 
