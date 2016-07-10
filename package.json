@@ -10,8 +10,11 @@
         "displayName": "NskTransport",
         "enableMultiJS": true,
         "messageKeys": {
+            "long": 1,
             "lat": 2,
-            "long": 1
+            "longf": 3,
+            "latf": 4,
+            "nearestStopName": 5
         },
         "projectType": "native",
         "resources": {

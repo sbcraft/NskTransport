@@ -2,27 +2,23 @@
 
 Window *rootWindow;
 TextLayer *textLayer1;
+TextLayer *textLayer2;
 
 #define INFO_KEY = "InfoKey"
 
 void inbox_received(DictionaryIterator *iterator, void *context) {
-    APP_LOG(APP_LOG_LEVEL_INFO, "something received");
-    Tuple *longitude = dict_find(iterator, MESSAGE_KEY_long);
-    if (longitude) {
-        APP_LOG(APP_LOG_LEVEL_INFO, "length: %d", longitude->length);
-        APP_LOG(APP_LOG_LEVEL_INFO, "%d", longitude->value->data[0]);
-    }
-    //app_message_open();
-    APP_LOG(APP_LOG_LEVEL_INFO, "%d", (int) MESSAGE_KEY_long);
-    //APP_LOG(APP_LOG_LEVEL_INFO, "long: %u", longitude->value->data);
+    Tuple *nearestStopTuple = dict_find(iterator, MESSAGE_KEY_nearestStopName);
+    text_layer_set_text(textLayer1, nearestStopTuple->value->cstring);
 }
 
 void init() {
     rootWindow = window_create();
 
-    textLayer1 = text_layer_create(GRect(0, 0, 140, 40));
-    text_layer_set_text(textLayer1, "Hello! (Привет!)");
+    textLayer1 = text_layer_create(GRect(0, 0, 140, 80));
+    textLayer2 = text_layer_create(GRect(0, 80, 140, 120));
+    text_layer_set_text(textLayer1, "Loading...");
     layer_add_child(window_get_root_layer(rootWindow), text_layer_get_layer(textLayer1));
+    layer_add_child(window_get_root_layer(rootWindow), text_layer_get_layer(textLayer2));
     
     window_stack_push(rootWindow, true);
 
@@ -32,6 +28,7 @@ void init() {
 
 void deinit() {
     text_layer_destroy(textLayer1);
+    text_layer_destroy(textLayer2);
     window_destroy(rootWindow);
 }
 
