@@ -39,3 +39,4 @@ def build(ctx):
 
     ctx.set_group('bundle')
     ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/**/*.js'), js_entry_file='src/js/app.js')
+    # ctx.pbl_bundle(binaries=binaries, js=ctx.path.ant_glob('src/js/*-compiled.js'), js_entry_file='src/js/app-compiled.js')

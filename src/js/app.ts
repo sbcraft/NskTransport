@@ -1,4 +1,5 @@
 "use strict";
+
 // var xhrRequest = function (url, type, callback) {
 //     var xhr = new XMLHttpRequest();
 //     xhr.onload = function () {
@@ -30,6 +31,7 @@
 //
 //     return "cur:["+pos.coords.latitude+","+pos.coords.longitude+"] " + closestStop.name;
 // }
+
 // function locationSuccess(pos) {
 //     var nearestStop = getNearestStop(pos);
 //     console.log(nearestStop);
@@ -42,9 +44,11 @@
 //
 //     Pebble.sendAppMessage(dictionary);
 // }
+
 // function locationError(err) {
 //
 // }
+
 // function getLocation() {
 //     navigator.geolocation.getCurrentPosition(
 //         locationSuccess,
@@ -52,96 +56,112 @@
 //         { timeout: 15000, maximumAge: 60000 }
 //     );
 // }
-var Vehicle = (function () {
-    function Vehicle() {
-        this.idx = 0;
-        this.title = null;
-    }
-    return Vehicle;
-}());
-var Stop = (function () {
-    function Stop() {
-        this.distance = 0;
-        this.vehicles = [];
-        this.idx = 0;
-    }
-    return Stop;
-}());
-var Stops = (function () {
-    function Stops() {
-        this.stops = [];
-    }
-    return Stops;
-}());
-function getNearestStopsAndVehiclesInfo() {
+
+class Vehicle {
+    public idx: number = 0;
+    public title: string = null;
+    public arrivesIn: number;
+}
+
+class Stop {
+    public stopName: string;
+    public distance:number = 0;
+    public vehicles: Vehicle[] = [];
+    public idx: number = 0;
+}
+
+class Stops {
+    public stops: Stop[] = [];
+}
+
+function getNearestStopsAndVehiclesInfo(): Stops {
     "use strict";
     var stops = new Stops();
+
     // stop A
     var stop = new Stop();
     stop.stopName = "A";
     stop.distance = 300;
+
     var vehicle1 = new Vehicle();
     vehicle1.title = "Tram 15";
     vehicle1.arrivesIn = 1;
     stop.vehicles.push(vehicle1);
+
     var vehicle2 = new Vehicle();
     vehicle2.title = "Tram 18";
     vehicle2.arrivesIn = 8;
+
     stop.vehicles.push(vehicle2);
     stops.stops.push(stop);
+
     // stop A
     var stop2 = new Stop();
     stop2.stopName = "B";
     stop2.distance = 350;
+
     var vehicle3 = new Vehicle();
     vehicle3.title = "Tram 1";
     vehicle3.arrivesIn = 3;
     stop2.vehicles.push(vehicle3);
+
     stops.stops.push(stop2);
+
     return stops;
 }
+
 function sendNearestStopsAndVehiclesInfo() {
     var info = getNearestStopsAndVehiclesInfo();
     var serialized = serialize(info);
     console.log(JSON.stringify(serialized));
-    Pebble.sendAppMessage(serialized, function () { }, function () { });
+    Pebble.sendAppMessage(serialized, () => {}, () => {});
 }
-function serialize(info) {
+
+function serialize(info: Stops){
     // { "stops": [101, 102],
     //    101: "Stop A|300m|id103|id104",
     //    102: "Stop B|350m|id105|id106",
     //    103: "Tram 15|3min",
     //    104: "Tram 18|5min"
     // }
+
     var startIdx = 101;
     var idx = startIdx;
-    var res = { stops: [] };
+    var res = { stops: []};
+
     // fill stops pointers into result
-    info.stops.forEach(function (stop) {
+    info.stops.forEach(stop => {
         stop.idx = idx++;
         res.stops.push(stop.idx);
     });
-    info.stops.forEach(function (stop) {
-        stop.vehicles.forEach(function (veh) {
-            veh.idx = idx++;
+
+    info.stops.forEach(stop => {
+        stop.vehicles.forEach(veh => {
+           veh.idx = idx++;
         });
-        var serializedStop = stop.stopName + "|" + stop.distance;
+        let serializedStop: string = `${stop.stopName}|${stop.distance}`;
         if (stop.vehicles.length > 0) {
-            var vehiclesIdxs = stop.vehicles.map(function (veh) { return veh.idx; }).join("|");
+            let vehiclesIdxs: string = stop.vehicles.map(veh => veh.idx).join("|");
             serializedStop = serializedStop.concat("|", vehiclesIdxs);
         }
         res[stop.idx] = serializedStop;
-        stop.vehicles.forEach(function (veh) {
-            res[veh.idx] = veh.title + "|" + veh.arrivesIn;
+
+        stop.vehicles.forEach(veh => {
+            res[veh.idx] = `${veh.title}|${veh.arrivesIn}`;
         });
     });
+
     return res;
 }
-Pebble.addEventListener("ready", function (e) {
-    console.log("PebbleKit JS ready!");
-    sendNearestStopsAndVehiclesInfo();
-});
-Pebble.addEventListener("appmessage", function (e) {
-    console.log("message received!");
-});
-//# sourceMappingURL=app.js.map
+
+Pebble.addEventListener("ready",
+    function(e) {
+        console.log("PebbleKit JS ready!");
+
+        sendNearestStopsAndVehiclesInfo();
+    });
+
+Pebble.addEventListener("appmessage",
+    function(e) {
+        console.log("message received!");
+    });

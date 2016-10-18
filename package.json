@@ -1,33 +1,35 @@
 {
-    "author": "SBCraft",
-    "dependencies": {},
-    "keywords": [],
-    "name": "nsktransport",
-    "pebble": {
-        "capabilities": [
-            "location"
-        ],
-        "displayName": "NskTransport",
-        "enableMultiJS": true,
-        "messageKeys": {
-            "long": 1,
-            "lat": 2,
-            "longf": 3,
-            "latf": 4,
-            "nearestStopName": 5
-        },
-        "projectType": "native",
-        "resources": {
-            "media": []
-        },
-        "sdkVersion": "3",
-        "targetPlatforms": [
-            "basalt"
-        ],
-        "uuid": "33797458-1691-439f-b42d-a85c46abbed5",
-        "watchapp": {
-            "watchface": false
-        }
+  "author": "SBCraft",
+  "dependencies": {},
+  "keywords": [],
+  "name": "nsktransport",
+  "pebble": {
+    "capabilities": [
+      "location"
+    ],
+    "displayName": "NskTransport",
+    "enableMultiJS": true,
+    "messageKeys": {
+      "long": 1,
+      "lat": 2,
+      "longf": 3,
+      "latf": 4,
+      "stops": 5
     },
-    "version": "0.1.0"
+    "projectType": "native",
+    "resources": {
+      "media": []
+    },
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "basalt"
+    ],
+    "uuid": "33797458-1691-439f-b42d-a85c46abbed5",
+    "watchapp": {
+      "watchface": false
+    }
+  },
+  "version": "0.1.0",
+  "devDependencies": {
+  }
 }
